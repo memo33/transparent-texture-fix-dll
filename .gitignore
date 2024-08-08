@@ -1,6 +1,6 @@
 /vendor/xwin
-*transparent-base.dll
-*transparent-base.lib
+*transparent-texture-fix.dll
+*transparent-texture-fix.lib
 *.zip
 *.tar.gz
 

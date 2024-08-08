@@ -15,11 +15,11 @@
 #endif
 
 
-#define TRANSPARENT_BASE_ID 0xf83443fa
+// #define TRANSPARENT_BASE_ID 0xf83443fa
 
 static constexpr uint32_t kTransparentBaseDllDirectorID = 0x0DE56C42;
 
-static constexpr std::string_view PluginLogFileName = "memo.transparent-base.log";
+static constexpr std::string_view PluginLogFileName = "memo.transparent-texture-fix.log";
 
 static constexpr uint32_t IsCellCovered_InjectPoint = 0x5df34e;
 static constexpr uint32_t IsCellCovered_ContinueJump = 0x5df354;
@@ -48,18 +48,20 @@ namespace
 
 	void NAKED_FUN Hook_IsCellCovered(void)
 	{
+		// if iid == 0, then isCovered (so that actually a hole is displayed; used for the Lightrail-Subway-transition)
+		// else if alpha == 0xff, then notCovered  // there is a (base or) overlay texture, so mark it as not covered, so that terrain is rendered first
+		// else continue (a semitransparent texture like a zoning decal?) (eventually returns notCovered, so that terrain is displayed as base)
 		__asm {
 			cmp dword ptr [ecx - 0x5], 0;  // iid == 0
 			je isCovered;  // we claim it isCovered, so that the terrain is not rendered and the cell actually stays uncovered
 
-			cmp dword ptr [ecx - 0x5], TRANSPARENT_BASE_ID;
-			je notCovered;  // we claim it is not covered, so that the terrain is rendered
+			// cmp dword ptr [ecx - 0x5], TRANSPARENT_BASE_ID;
+			// je notCovered;  // we claim it is not covered, so that the terrain is rendered
 
-			// The original comparison would exit the loop prematurely:
-			// cmp byte ptr [ecx + 0x6], 0xff;  // checks if alpha is 0xff
-			// je isCovered;
+			cmp byte ptr [ecx + 0x6], 0xff;  // checks if alpha is 0xff
+			je notCovered;  // originally: je isCovered
 
-			push IsCellCovered_ContinueJump;  // continues loop to check remaining textures
+			push IsCellCovered_ContinueJump;  // continues loop to check remaining textures, eventually returns notCovered
 			ret;
 
 isCovered:
@@ -78,11 +80,11 @@ notCovered:
 		try
 		{
 			InstallHook(IsCellCovered_InjectPoint, Hook_IsCellCovered);
-			logger.WriteLine(LogLevel::Info, "Installed Transparent Base Texture patch.");
+			logger.WriteLine(LogLevel::Info, "Installed Transparent Texture Fix patch.");
 		}
 		catch (const wil::ResultException& e)
 		{
-			logger.WriteLineFormatted(LogLevel::Error, "Failed to install Transparent Base Texture patch.\n%s", e.what());
+			logger.WriteLineFormatted(LogLevel::Error, "Failed to install Transparent Texture Fix patch.\n%s", e.what());
 		}
 	}
 }
@@ -101,7 +103,7 @@ public:
 
 		Logger& logger = Logger::GetInstance();
 		logger.Init(logFilePath, LogLevel::Error);
-		logger.WriteLogFileHeader("Transparent Base Texture DLL " PLUGIN_VERSION_STR);
+		logger.WriteLogFileHeader("Transparent Texture Fix DLL " PLUGIN_VERSION_STR);
 	}
 
 	uint32_t GetDirectorID() const

@@ -26,7 +26,7 @@ compile:
 		/I ../vendor/gzcom-dll/gzcom-dll/include \
 		/I ../vendor/wil/include \
 		/I ../vendor/sc4-resource-loading-hooks/src/public/include \
-		/o memo.transparent-base.dll ./*.cpp ../vendor/gzcom-dll/gzcom-dll/src/{cRZCOMDllDirector,cRZBaseString}.cpp \
+		/o memo.transparent-texture-fix.dll ./*.cpp ../vendor/gzcom-dll/gzcom-dll/src/{cRZCOMDllDirector,cRZBaseString}.cpp \
 		/link /libpath:../vendor/xwin/crt/lib/x86 /libpath:../vendor/xwin/sdk/lib/um/x86 /libpath:../vendor/xwin/sdk/lib/ucrt/x86 \
 		version.lib ole32.lib
 #

@@ -1,8 +1,6 @@
-# Transparent Base Texture DLL for SimCity 4
+# Transparent Texture Fix DLL for SimCity 4
 
-A DLL plugin for SimCity 4 that fixes the underground view bug (water bug) that occurs on lots using overlay textures without a base texture.
-
-This plugin provides a base texture (0xF83443FA) that is transparent. Lots using overlay textures without a base texture need to be updated to use this transparent base texture instead.
+A DLL plugin for SimCity 4 that fixes the underground view bug (water bug) that occurs on lots using overlay textures without a base texture, after exiting the underground view.
 
 ## System requirements
 
@@ -14,9 +12,8 @@ This plugin provides a base texture (0xF83443FA) that is transparent. Lots using
 
 Copy the DLL into the top-level directory of either Plugins folder
 (place it directly in `<Documents>\SimCity 4\Plugins` or `<SC4 install folder>\Plugins`, not in a subfolder).
-Copy the included .dat file anywhere into your Plugins.
 
-Alternatively, the mod can be installed with Sc4pac: [memo:transparent-base-dll](https://memo33.github.io/sc4pac/channel/?pkg=memo:transparent-base-dll)
+Alternatively, the mod can be installed with Sc4pac: [memo:transparent-texture-fix-dll](https://memo33.github.io/sc4pac/channel/?pkg=memo:memo:transparent-texture-fix-dll)
 
 ## Troubleshooting
 
